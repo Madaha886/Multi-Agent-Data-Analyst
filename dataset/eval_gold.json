@@ -1,0 +1,154 @@
+{
+  "benchmark_name": "Amazon Sale Report Question Benchmark",
+  "dataset_path": "dataset/Amazon Sale Report.csv",
+  "schema_path": "dataset/schema.json",
+  "expectations": [
+    {
+      "question_id": 1,
+      "expected_task_type": "ranking",
+      "expected_key_columns": ["Category", "Amount"],
+      "expected_operation_pattern": ["groupby", "sum", "sort_values"],
+      "expected_result_kind": "rows",
+      "expected_result_shape": "(5, 2)",
+      "reference_result": {
+        "columns": ["Category", "Amount"],
+        "records": [
+          {"Category": "Set", "Amount": 39204124.03},
+          {"Category": "kurta", "Amount": 21299546.7},
+          {"Category": "Western Dress", "Amount": 11216072.69},
+          {"Category": "Top", "Amount": 5347792.3},
+          {"Category": "Ethnic Dress", "Amount": 791217.66}
+        ]
+      },
+      "acceptable_signals": ["Set", "kurta", "Western Dress"],
+      "allowed_result_aliases": {"Amount": ["total_amount"]},
+      "notes": []
+    },
+    {
+      "question_id": 2,
+      "expected_task_type": "trend",
+      "expected_key_columns": ["Date", "Order ID"],
+      "expected_operation_pattern": ["groupby", "count", "to_period"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(4,)",
+      "reference_result": {
+        "pairs": [["2022-03", 171], ["2022-04", 49067], ["2022-05", 42040], ["2022-06", 37697]]
+      },
+      "acceptable_signals": ["2022-04", "2022-05", "2022-06"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 3,
+      "expected_task_type": "aggregation",
+      "expected_key_columns": ["Status"],
+      "expected_operation_pattern": ["cancelled", "len", "percentage"],
+      "expected_result_kind": "scalar",
+      "expected_result_shape": null,
+      "reference_result": {
+        "value": 14.213607288234154
+      },
+      "acceptable_signals": ["Cancelled"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 4,
+      "expected_task_type": "ranking",
+      "expected_key_columns": ["ship-state", "Order ID"],
+      "expected_operation_pattern": ["groupby", "count", "head"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(5,)",
+      "reference_result": {
+        "pairs": [["MAHARASHTRA", 22260], ["KARNATAKA", 17326], ["TAMIL NADU", 11483], ["TELANGANA", 11330], ["UTTAR PRADESH", 10638]]
+      },
+      "acceptable_signals": ["MAHARASHTRA", "KARNATAKA", "TAMIL NADU"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 5,
+      "expected_task_type": "ranking",
+      "expected_key_columns": ["Size", "Qty"],
+      "expected_operation_pattern": ["groupby", "sum", "sort_values"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(5,)",
+      "reference_result": {
+        "pairs": [["M", 20447], ["L", 20000], ["XL", 18923], ["XXL", 16516], ["S", 15331]]
+      },
+      "acceptable_signals": ["M", "L", "XL"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 6,
+      "expected_task_type": "comparison",
+      "expected_key_columns": ["Fulfilment", "Status"],
+      "expected_operation_pattern": ["groupby", "cancelled", "percentage"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(2,)",
+      "reference_result": {
+        "pairs": [["Amazon", 12.78846797030034], ["Merchant", 17.468238409247142]]
+      },
+      "acceptable_signals": ["Amazon", "Merchant"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 7,
+      "expected_task_type": "comparison",
+      "expected_key_columns": ["B2B", "Amount"],
+      "expected_operation_pattern": ["groupby", "mean"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(2,)",
+      "reference_result": {
+        "pairs": [["False", 648.1918072579506], ["True", 701.3295255041519]]
+      },
+      "acceptable_signals": ["True", "False"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 8,
+      "expected_task_type": "ranking",
+      "expected_key_columns": ["Category", "Size", "Qty"],
+      "expected_operation_pattern": ["crosstab", "aggfunc", "idxmax"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(9,)",
+      "reference_result": {
+        "pairs": [["Blouse", "Free"], ["Bottom", "L"], ["Dupatta", "Free"], ["Ethnic Dress", "XL"], ["Saree", "Free"], ["Set", "M"], ["Top", "XL"], ["Western Dress", "L"], ["kurta", "L"]]
+      },
+      "acceptable_signals": ["Set", "kurta", "L", "M"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 9,
+      "expected_task_type": "comparison",
+      "expected_key_columns": ["promotion-ids", "Amount"],
+      "expected_operation_pattern": ["notna", "groupby", "mean"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(2,)",
+      "reference_result": {
+        "pairs": [["False", 599.6509017219051], ["True", 674.2210185954052]]
+      },
+      "acceptable_signals": ["True", "False"],
+      "allowed_result_aliases": {},
+      "notes": []
+    },
+    {
+      "question_id": 10,
+      "expected_task_type": "ranking",
+      "expected_key_columns": ["Date", "Amount"],
+      "expected_operation_pattern": ["day_name", "groupby", "sum", "sort_values"],
+      "expected_result_kind": "pairs",
+      "expected_result_shape": "(7,)",
+      "reference_result": {
+        "pairs": [["Sunday", 12029441.3], ["Tuesday", 11491626.07], ["Saturday", 11339357.57], ["Monday", 11318441.14], ["Wednesday", 11249823.35], ["Friday", 10805394.6], ["Thursday", 10358594.27]]
+      },
+      "acceptable_signals": ["Sunday", "Tuesday", "Saturday"],
+      "allowed_result_aliases": {},
+      "notes": []
+    }
+  ]
+}

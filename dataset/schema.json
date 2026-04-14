@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AmazonSaleReport",
+  "description": "Amazon India e-commerce orders, Q2 2022. One row = one order line.",
+  "type": "object",
+  "properties": {
+    "index": {
+      "type": "integer",
+      "description": "Auto-generated row index. Not a meaningful business key."
+    },
+    "Order ID": {
+      "type": "string",
+      "description": "Unique identifier for each order. Use to count distinct orders or join tables.",
+      "example": "405-8078784-5731545"
+    },
+    "Date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the order was placed (DD-MM-YY). Parse to datetime before any time-series work.",
+      "example": "04-30-22"
+    },
+    "Status": {
+      "type": "string",
+      "enum": ["Shipped", "Cancelled", "Pending", "Shipped - Delivered to Buyer", "Pending - Waiting for Pick Up", "Shipping"],
+      "description": "Current fulfilment state of the order at time of data export."
+    },
+    "Fulfilment": {
+      "type": "string",
+      "enum": ["Amazon", "Merchant"],
+      "description": "Who handled the physical dispatch — Amazon's own logistics or a third-party merchant."
+    },
+    "Sales Channel": {
+      "type": "string",
+      "description": "Platform through which the sale was made.",
+      "example": "Amazon.in"
+    },
+    "ship-service-level": {
+      "type": "string",
+      "enum": ["Standard", "Expedited"],
+      "description": "Shipping speed tier chosen by the customer."
+    },
+    "Style": {
+      "type": "string",
+      "description": "Design or style code for the product. Groups variants of the same design.",
+      "example": "SET389"
+    },
+    "SKU": {
+      "type": "string",
+      "description": "Stock Keeping Unit — unique code per product+size+colour combination.",
+      "example": "SET389-KR-NP-S"
+    },
+    "Category": {
+      "type": "string",
+      "description": "Product category. Main dimension for product-level analysis.",
+      "example": "kurta"
+    },
+    "Size": {
+      "type": "string",
+      "enum": ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL", "Free"],
+      "description": "Garment size. Use for inventory and sizing demand analysis."
+    },
+    "ASIN": {
+      "type": "string",
+      "description": "Amazon Standard Identification Number — Amazon's own product ID. Can be used to look up listings."
+    },
+    "Courier Status": {
+      "type": "string",
+      "description": "Delivery outcome reported by the courier (e.g. Delivered, Undelivered, Returned to Seller)."
+    },
+    "Qty": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of units ordered. Usually 1. Multiply by Amount for total value when Qty > 1.",
+      "example": 1
+    },
+    "currency": {
+      "type": "string",
+      "description": "Currency code. Almost always INR — safe to treat as constant.",
+      "example": "INR"
+    },
+    "Amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Order value in Indian Rupees (₹). Your primary revenue metric. May be null for cancelled orders.",
+      "example": 647.00
+    },
+    "ship-city": {
+      "type": "string",
+      "description": "Destination city. Use for geographic demand mapping.",
+      "example": "BENGALURU"
+    },
+    "ship-state": {
+      "type": "string",
+      "description": "Destination state (Indian state names). Best geographic grain for regional analysis.",
+      "example": "KARNATAKA"
+    },
+    "ship-postal-code": {
+      "type": "string",
+      "description": "6-digit Indian PIN code. Finer-grained than state; useful for city-level mapping."
+    },
+    "ship-country": {
+      "type": "string",
+      "description": "Destination country. Constant (IN) — safe to ignore.",
+      "example": "IN"
+    },
+    "promotion-ids": {
+      "type": ["string", "null"],
+      "description": "Comma-separated list of promotion/discount codes applied. Null if no promotion used."
+    },
+    "B2B": {
+      "type": "boolean",
+      "description": "True if the buyer is a registered business customer (B2B). False for regular consumers (B2C)."
+    },
+    "fulfilled-by": {
+      "type": ["string", "null"],
+      "description": "More granular fulfilment detail. 'Easy Ship' = Amazon-managed last-mile. Null = Merchant-fulfilled."
+    }
+  },
+  "notes": {
+    "row_count": "~128,975 rows",
+    "time_range": "March – June 2022",
+    "primary_key": "Order ID (not always unique — one order can have multiple rows for multiple items)",
+    "currency": "All monetary values in INR (Indian Rupee)",
+    "nulls": "Amount is commonly null on Cancelled orders. promotion-ids is null when no deal applied."
+  }
+}

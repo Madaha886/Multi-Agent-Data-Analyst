@@ -1,0 +1,5 @@
+langgraph>=0.2.50
+pandas>=2.2.3
+pydantic>=2.9.2
+pytest>=8.3.3
+streamlit>=1.44.0

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multi-agent-data-analyst"
+version = "0.1.0"
+description = "A local multi-agent analytics assistant built with LangGraph."
+requires-python = ">=3.11"
+dependencies = [
+  "langgraph>=0.2.50",
+  "pandas>=2.2.3",
+  "pydantic>=2.9.2",
+  "streamlit>=1.44.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.3",
+]
+
+[project.scripts]
+multi-agent-analyst = "multi_agent_analyst.app.cli:main"
+multi-agent-eval = "multi_agent_analyst.eval.run:main"
+multi-agent-ui = "multi_agent_analyst.ui.app:main"
+
+[tool.setuptools.packages.find]
+include = ["multi_agent_analyst*"]
+
+[tool.setuptools.package-data]
+multi_agent_analyst = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

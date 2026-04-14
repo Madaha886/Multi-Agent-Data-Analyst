@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AmazonSaleReport — Example Analysis Questions",
+  "description": "10 beginner-to-intermediate data science questions for the Kaggle e-commerce sales dataset.",
+  "dataset": "https://www.kaggle.com/datasets/thedevastator/unlock-profits-with-e-commerce-sales-data",
+  "questions": [
+    {
+      "id": 1,
+      "difficulty": "beginner",
+      "technique": "groupby",
+      "question": "Which product category generates the most total revenue?",
+      "hint": "Group by Category, sum Amount, sort descending.",
+      "columns_used": ["Category", "Amount"],
+      "pandas_approach": "df.groupby('Category')['Amount'].sum().sort_values(ascending=False)"
+    },
+    {
+      "id": 2,
+      "difficulty": "beginner",
+      "technique": "time_series",
+      "question": "How does the number of orders change month by month?",
+      "hint": "Parse Date to datetime, extract month, count Order IDs per month.",
+      "columns_used": ["Date", "Order ID"],
+      "pandas_approach": "df['Date'] = pd.to_datetime(df['Date']); df.groupby(df['Date'].dt.to_period('M'))['Order ID'].count()"
+    },
+    {
+      "id": 3,
+      "difficulty": "beginner",
+      "technique": "filtering",
+      "question": "What percentage of all orders were cancelled?",
+      "hint": "Filter Status == 'Cancelled', divide by total row count, multiply by 100.",
+      "columns_used": ["Status"],
+      "pandas_approach": "(df['Status'] == 'Cancelled').sum() / len(df) * 100"
+    },
+    {
+      "id": 4,
+      "difficulty": "beginner",
+      "technique": "groupby",
+      "question": "Which 5 Indian states placed the most orders?",
+      "hint": "Group by ship-state, count rows, take top 5.",
+      "columns_used": ["ship-state", "Order ID"],
+      "pandas_approach": "df.groupby('ship-state')['Order ID'].count().sort_values(ascending=False).head(5)"
+    },
+    {
+      "id": 5,
+      "difficulty": "beginner",
+      "technique": "groupby",
+      "question": "What is the most popular clothing size ordered?",
+      "hint": "Group by Size, count Qty or rows, sort descending.",
+      "columns_used": ["Size", "Qty"],
+      "pandas_approach": "df.groupby('Size')['Qty'].sum().sort_values(ascending=False)"
+    },
+    {
+      "id": 6,
+      "difficulty": "intermediate",
+      "technique": "filtering",
+      "question": "Does Amazon-fulfilled shipping have a lower cancellation rate than merchant-fulfilled?",
+      "hint": "Filter by Fulfilment, calculate cancellation rate separately for each group and compare.",
+      "columns_used": ["Fulfilment", "Status"],
+      "pandas_approach": "df.groupby('Fulfilment').apply(lambda g: (g['Status'] == 'Cancelled').sum() / len(g) * 100)"
+    },
+    {
+      "id": 7,
+      "difficulty": "intermediate",
+      "technique": "groupby",
+      "question": "Are B2B orders larger on average than B2C orders?",
+      "hint": "Group by B2B (True/False), compute mean of Amount for each group.",
+      "columns_used": ["B2B", "Amount"],
+      "pandas_approach": "df.groupby('B2B')['Amount'].mean()"
+    },
+    {
+      "id": 8,
+      "difficulty": "intermediate",
+      "technique": "crosstab",
+      "question": "Which size sells best within each product category?",
+      "hint": "Use pd.crosstab with Category and Size, aggregate Qty, then find the max per row.",
+      "columns_used": ["Category", "Size", "Qty"],
+      "pandas_approach": "pd.crosstab(df['Category'], df['Size'], values=df['Qty'], aggfunc='sum').idxmax(axis=1)"
+    },
+    {
+      "id": 9,
+      "difficulty": "intermediate",
+      "technique": "filtering",
+      "question": "Do orders with a promotion applied have a higher or lower average order value?",
+      "hint": "Create a binary column from promotion-ids.notna(), then groupby and mean Amount.",
+      "columns_used": ["promotion-ids", "Amount"],
+      "pandas_approach": "df['promotion_used'] = df['promotion-ids'].notna(); df.groupby('promotion_used')['Amount'].mean()"
+    },
+    {
+      "id": 10,
+      "difficulty": "intermediate",
+      "technique": "time_series",
+      "question": "Which day of the week sees the highest total sales revenue?",
+      "hint": "Parse Date, extract dt.day_name(), groupby that and sum Amount.",
+      "columns_used": ["Date", "Amount"],
+      "pandas_approach": "df['Date'] = pd.to_datetime(df['Date']); df.groupby(df['Date'].dt.day_name())['Amount'].sum().sort_values(ascending=False)"
+    }
+  ]
+}
